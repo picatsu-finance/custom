@@ -26,6 +26,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
 	compile group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.4.6'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.3.3.RELEASE'
 
 	compile 'org.patriques:alphavantage4j:1.4'
 	compileOnly 'org.projectlombok:lombok'

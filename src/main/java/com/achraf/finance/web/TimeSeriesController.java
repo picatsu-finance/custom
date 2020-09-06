@@ -1,7 +1,6 @@
 package com.achraf.finance.web;
 
-import com.achraf.finance.model.Listcompagny;
-import com.achraf.finance.service.TimeSeries;
+import com.achraf.finance.service.TimeSeriesService;
 import lombok.extern.slf4j.Slf4j;
 import org.patriques.output.timeseries.data.StockData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +18,24 @@ import java.util.Map;
 public class TimeSeriesController {
 
     @Autowired
-    public TimeSeries timeSeries;
+    public TimeSeriesService timeSeriesService;
 
-    @Autowired
-    public Listcompagny listcompagny;
+
 
 
     @GetMapping(value = "/{code}")
-    public List<StockData> test(@PathVariable String code){
+    public List<StockData> getByCode(@PathVariable String code){
         log.info("tim serie for code "+code);
-        return timeSeries.getTS(code);
+        return timeSeriesService.getTS(code);
     }
 
+    @GetMapping(value = "/search-ticker/{str}")
+    public List<String> findCode(@PathVariable String str){
+       return timeSeriesService.findTickers(str);
+    }
 
     @GetMapping(value = "/tickers")
     public Map<String, String> LoadCompagnyList() {
-        return listcompagny.getList();
+        return timeSeriesService.getListcompagny().getList();
     }
 }
