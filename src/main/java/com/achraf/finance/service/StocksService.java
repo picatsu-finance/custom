@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Component
 @Getter
-public class TimeSeriesService {
+public class StocksService {
 
     private org.patriques.TimeSeries stockTimeSeries;
     @Autowired
@@ -25,7 +25,7 @@ public class TimeSeriesService {
     @Autowired
     public Listcompagny listcompagny;
 
-    public TimeSeriesService() {
+    public StocksService() {
         stockTimeSeries = new org.patriques.TimeSeries(apiConnector);
     }
 
