@@ -27,7 +27,7 @@ public class CryptoService {
 
         RestTemplate restTemplate = new RestTemplate();
         String fooResourceUrl
-                = "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol="+symbol+"&market="+market+"&apikey=63NJUA45A97BF6OI";
+                = BASE_URL+"function=DIGITAL_CURRENCY_DAILY&symbol="+symbol+"&market="+market+"&apikey=63NJUA45A97BF6OI";
         ResponseEntity<String> response
                 = restTemplate.getForEntity(fooResourceUrl + "/1", String.class);
 
@@ -39,37 +39,5 @@ public class CryptoService {
     }
 
 
-    public void find2(String symbol, String market) {
-        String test = "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=CNY&apikey=63NJUA45A97BF6OI";
-        WebClient web = WebClient.create("https://www.alphavantage.co");
 
-
-        try {
-            Mono<IntraDay> response = web.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/query")
-                            .queryParam("function", "DIGITAL_CURRENCY_DAILY" )
-                            .queryParam("symbol", symbol)
-                            .queryParam("market", market)
-                            .queryParam("apikey", "63NJUA45A97BF6OI" )
-                            .build()
-                    ).retrieve().bodyToMono(IntraDay.class);
-
-
-            Map<String, String> metaData = response.block().getMetaData();
-            System.out.println("Information: " + metaData.get("1. Information"));
-            System.out.println("Digital Currency Code: " + metaData.get("2. Digital Currency Code"));
-
-            List<SimpelDigitalCurrencyData> digitalData =  response.block().getDigitalData();
-            digitalData.forEach(data -> {
-                System.out.println("date:       " + data.getDateTime());
-                System.out.println("price A:    " + data.getPriceA());
-                System.out.println("price B:    " + data.getPriceB());
-                System.out.println("volume:     " + data.getVolume());
-                System.out.println("market cap: " + data.getMarketCap());
-            });
-        } catch (AlphaVantageException e) {
-            System.out.println("something went wrong");
-        }
-    }
 }

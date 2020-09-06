@@ -21,8 +21,6 @@ public class TimeSeriesController {
     public TimeSeriesService timeSeriesService;
 
 
-
-
     @GetMapping(value = "/{code}")
     public List<StockData> getByCode(@PathVariable String code){
         log.info("tim serie for code "+code);
