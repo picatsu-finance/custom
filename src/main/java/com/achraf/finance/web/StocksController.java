@@ -27,33 +27,10 @@ public class StocksController {
 
     @GetMapping(value = "/{code}")
     public List<StockData> getByCode(@PathVariable String code){
-        log.info("tim serie for code "+code);
+        log.info("time serie for code "+code);
         return stocksService.getTS(code);
     }
 
-    @GetMapping(value = "/yahoo/{code}")
-    // https://financequotes-api.com/
-    public Object yahooGetByCode(@PathVariable String code) throws IOException {
-        Stock stock = YahooFinance.get("INTC");
-
-        BigDecimal price = stock.getQuote().getPrice();
-        BigDecimal change = stock.getQuote().getChangeInPercent();
-        BigDecimal peg = stock.getStats().getPeg();
-        BigDecimal dividend = stock.getDividend().getAnnualYieldPercent();
-
-        stock.print();
-        // SINGLE STOCK - EASY REFRESH
-        log.info( "########### SINGLE STOCK : " +  stock.getQuote(true).getPrice());
-
-
-        // MULTIPLE STOCKS AT ONCE
-        String[] symbols = new String[] {"INTC", "BABA", "TSLA", "AIR.PA", "YHOO"};
-        Map<String, Stock> stocks = YahooFinance.get(symbols); // single request
-        Stock intel = stocks.get("INTC");
-        Stock airbus = stocks.get("AIR.PA");
-        log.info( "########### MULTIPLE STOCKS : " +   intel + airbus );
-        return stocksService.getTS(code);
-    }
 
     @GetMapping(value = "/search-ticker/{str}")
     public List<String> findCode(@PathVariable String str){
