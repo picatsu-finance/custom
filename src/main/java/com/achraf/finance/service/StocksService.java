@@ -1,6 +1,7 @@
 package com.achraf.finance.service;
 
-import com.achraf.finance.model.Listcompagny;
+import com.achraf.finance.config.CustomFunctions;
+import com.achraf.finance.model.TickerModel;
 import lombok.Getter;
 import org.patriques.AlphaVantageConnector;
 import org.patriques.input.timeseries.Interval;
@@ -9,8 +10,10 @@ import org.patriques.output.AlphaVantageException;
 import org.patriques.output.timeseries.IntraDay;
 import org.patriques.output.timeseries.data.StockData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +23,11 @@ import java.util.Map;
 public class StocksService {
 
     private org.patriques.TimeSeries stockTimeSeries;
+
     @Autowired
     private AlphaVantageConnector apiConnector;
-    @Autowired
-    public Listcompagny listcompagny;
+
+
 
     public StocksService() {
         stockTimeSeries = new org.patriques.TimeSeries(apiConnector);
@@ -45,12 +49,12 @@ public class StocksService {
         return null;
     }
 
-    public List<String> findTickers(String str) {
+    public List<TickerModel> findTickers(String str) throws IOException {
 
-        List<String> values = new ArrayList<>();
-        for (Map.Entry<String, String> entry : listcompagny.getList().entrySet()) {
-            if(( (entry.getKey() +entry.getValue() ).toLowerCase()).contains(str.toLowerCase())) {
-                values.add (entry.getKey());
+        List<TickerModel> values = new ArrayList<>();
+        for (TickerModel entry : CustomFunctions.loadData() ) {
+            if(( (entry.getCode() + entry.getName() ).toLowerCase()).contains(str.toLowerCase()) ) {
+                values.add (entry);
             }
         }
 

@@ -2,13 +2,14 @@ package com.achraf.finance.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 @Data
 @AllArgsConstructor
-public class Listcompagny {
-    Map<String, String> list;
+@NoArgsConstructor
+public class TickerModel {
+    private String name;
+    private String code;
 }

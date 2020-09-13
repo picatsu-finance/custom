@@ -1,5 +1,6 @@
 package com.achraf.finance.config;
 
+import com.achraf.finance.model.TickerModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +8,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -16,9 +19,9 @@ import java.util.Map;
 @AllArgsConstructor
 public class CustomFunctions {
 
-    public static Map<String, String> loadData() throws IOException {
+    public static List<TickerModel> loadData() throws IOException {
 
-        Map<String, String> liste = new HashMap<>();
+        List<TickerModel> liste = new ArrayList<>();
         String[] fileNames = new String[]{"listing_status.csv", "wilshire_5000_stocks.csv"};
 
         String myLine = "";
@@ -47,11 +50,14 @@ public class CustomFunctions {
 
 
 
-    private static void addToArray(Map<String, String> liste, String myLine) {
+    private static void addToArray(List<TickerModel> liste, String myLine) {
         String[] infos = myLine.split(",");
+        if(infos.length > 1 ) {
+            TickerModel res = new TickerModel(infos[0], infos[1]);
+            if(!liste.contains(res)) {
+                liste.add(res);
+            }
 
-        if(! liste.containsKey(infos[0]) && infos.length > 1 && infos[0] != "Ticker") {
-            liste.put(infos[0], infos[1]);
         }
 
     }

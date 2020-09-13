@@ -1,7 +1,7 @@
 package com.achraf.finance.config;
 
 
-import com.achraf.finance.model.Listcompagny;
+import com.achraf.finance.model.TickerModel;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.*;
+import java.util.List;
 
 
 @Configuration
@@ -35,10 +36,10 @@ public class CustomConfiguration {
     }
 
 
-    @Bean
-    public Listcompagny listcompagny() throws IOException {
 
-        return new Listcompagny(CustomFunctions.loadData() );
+    public static List<TickerModel> listcompagny() throws IOException {
+
+        return  CustomFunctions.loadData();
     }
 
 

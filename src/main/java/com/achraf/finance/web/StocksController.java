@@ -1,5 +1,7 @@
 package com.achraf.finance.web;
 
+import com.achraf.finance.config.CustomFunctions;
+import com.achraf.finance.model.TickerModel;
 import com.achraf.finance.service.StocksService;
 import lombok.extern.slf4j.Slf4j;
 import org.patriques.output.timeseries.data.StockData;
@@ -8,13 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @RequestMapping(value = "/api/v1/stocks")
 @RestController("StocksController")
@@ -33,12 +31,12 @@ public class StocksController {
 
 
     @GetMapping(value = "/search-ticker/{str}")
-    public List<String> findCode(@PathVariable String str){
+    public List<TickerModel> findCode(@PathVariable String str) throws IOException {
        return stocksService.findTickers(str);
     }
 
     @GetMapping(value = "/tickers")
-    public Map<String, String> LoadCompagnyList() {
-        return stocksService.getListcompagny().getList();
+    public List<TickerModel> LoadCompagnyList() throws IOException {
+        return CustomFunctions.loadData();
     }
 }
