@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
-@RequestMapping(value = "/api/v1/indicator")
+
+@RequestMapping(value = "/api/v1/custom/indicator")
 @RestController("TechnicalIndicatorsController")
 @Slf4j
 public class TechnicalIndicatorsController {

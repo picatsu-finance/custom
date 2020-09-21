@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(value = "/api/v1/perf")
+@RequestMapping(value = "/api/v1/custom/perf")
 @RestController("SectorPerformancesController")
 @Slf4j
 public class SectorPerformancesController {

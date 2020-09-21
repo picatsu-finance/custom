@@ -1,7 +1,6 @@
 package com.achraf.finance.config;
 
 
-import com.achraf.finance.model.TickerModel;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
@@ -9,12 +8,10 @@ import org.patriques.AlphaVantageConnector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.*;
-import java.util.List;
 
 
 @Configuration
-public class CustomConfiguration {
+public class Config {
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -22,7 +19,7 @@ public class CustomConfiguration {
                 .info(new Info()
                         .title("Swagger doc for the Finance-Ash project")
                         .version("0.0.1")
-                        .description("Finance API Ash project")
+                        .description("Finance Custom Products API Ash project")
                         .termsOfService("http://swagger.io/terms/")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")));
     }
@@ -30,18 +27,10 @@ public class CustomConfiguration {
     @Bean
     public AlphaVantageConnector beanAlphaApiConnector() {
         String apiKey = "63NJUA45A97BF6OI";
-        int timeout = 3000;
+        int timeout = 5000;
         AlphaVantageConnector apiConnector = new AlphaVantageConnector(apiKey, timeout);
         return apiConnector;
     }
-
-
-
-    public static List<TickerModel> listcompagny() throws IOException {
-
-        return  CustomFunctions.loadData();
-    }
-
 
 
 }
