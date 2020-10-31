@@ -6,14 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.patriques.output.sectorperformances.Sectors;
 import org.patriques.output.technicalindicators.MACD;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value = "/api/v1/custom/perf")
 @RestController("SectorPerformancesController")
 @Slf4j
+@CrossOrigin
 public class SectorPerformancesController {
 
     @Autowired
