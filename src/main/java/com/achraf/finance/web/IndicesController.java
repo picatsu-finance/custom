@@ -2,6 +2,7 @@ package com.achraf.finance.web;
 
 import com.achraf.finance.model.IndiceModel;
 import com.achraf.finance.repository.IndicesRepository;
+import com.achraf.finance.service.IndicesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+
 @RequestMapping(value = "/api/v1/indices")
 @RestController("IndicesController")
 @Slf4j
@@ -26,8 +28,17 @@ import java.util.List;
 public class IndicesController {
 
 
-     @Autowired
-     private IndicesRepository indicesRepository;
+    @Autowired
+    private IndicesService indicesService;
+
+    @Autowired
+    private IndicesRepository indicesRepository;
+
+    @GetMapping(value = "/get-global")
+    public Object getPaginated()  {
+
+        return  this.indicesService.loadIndices();
+    }
 
     @PostMapping(value = "/loadMultiple")
     public void loadIndices(@RequestBody IndiceModel[] indices, HttpServletRequest request) {
@@ -40,6 +51,8 @@ public class IndicesController {
 
 
 
+
+
     @GetMapping(value = "/paginate")
     public Page<IndiceModel> getPaginated(@RequestParam int page, @RequestParam int size, HttpServletRequest request)  {
 
@@ -49,7 +62,12 @@ public class IndicesController {
     @GetMapping(value = "/search-indices/{str}")
     public List<IndiceModel> findCode(@PathVariable String str, HttpServletRequest request) {
 
-        return this.indicesRepository.findByValueOrMicOrLabelContains(str.toUpperCase());
+        return this.indicesRepository.findByValueContainingOrLabelContaining(str.toUpperCase());
+        /*
+        return Stream.concat(this.indicesRepository.findByValueContainsIgnoreCase(str.toUpperCase()).stream(),
+                this.indicesRepository.findByLabelContainsIgnoreCase(str.toUpperCase()).stream()
+        ).collect(Collectors.toList());*/
+
     }
 
     @PostMapping(value = "/create")
@@ -58,8 +76,10 @@ public class IndicesController {
         indice.setLabel(indice.getLabel().toUpperCase());
         indice.setMic(indice.getMic().toUpperCase());
         indice.setValue(indice.getValue().toUpperCase());
-
+        if(! this.indicesRepository.existsByMicAndValue(indice.getMic(), indice.getValue()))
         return this.indicesRepository.insert(indice);
+
+        return null;
     }
 
     @DeleteMapping(value= "/{indice-code}/delete")

@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface IndicesRepository extends MongoRepository<IndiceModel, String> {
 
-    List<IndiceModel> findByValueOrMicOrLabelContains(String value);
-
+    boolean existsByMicAndValue(String mic, String value);
+    List<IndiceModel> findByValueContainingOrLabelContaining(String value);
+    List<IndiceModel> findByValueContainsIgnoreCase(String value);
+    List<IndiceModel> findByLabelContainsIgnoreCase(String label);
  }
