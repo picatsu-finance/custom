@@ -2,6 +2,7 @@ package com.achraf.finance.web;
 
 import com.achraf.finance.model.SelectedTickers;
 import com.achraf.finance.repository.SelectedTickersRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class SelectedTickersController {
     private SelectedTickersRepository selectedTickersRepository;
 
     @GetMapping(value = "/{id}")
+    @Operation(summary = "get selected liste of selectedTickers from DB ")
     public List<SelectedTickers> getMySelectedTickersList(HttpServletRequest request,
                                                           @PathVariable String id)  {
 
@@ -36,6 +38,7 @@ public class SelectedTickersController {
     }
 
     @PostMapping(value = "/create")
+    @Operation(summary = "add custom followed tickers to db")
     public SelectedTickers addTickers(@RequestBody SelectedTickers ticker, HttpServletRequest request) {
 
         return this.selectedTickersRepository.insert(ticker);
@@ -43,6 +46,7 @@ public class SelectedTickersController {
     }
 
     @DeleteMapping(value= "/{userID}/delete")
+    @Operation(summary = "delete selected ticker from specific user")
     public Boolean deleteTicker(@PathVariable(value= "userID") String userID,
                                 @RequestBody SelectedTickers ticker,
                                 HttpServletRequest request) {

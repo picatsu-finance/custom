@@ -3,6 +3,7 @@ package com.achraf.finance.web;
 import com.achraf.finance.model.IndiceModel;
 import com.achraf.finance.repository.IndicesRepository;
 import com.achraf.finance.service.IndicesService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,12 +36,14 @@ public class IndicesController {
     private IndicesRepository indicesRepository;
 
     @GetMapping(value = "/get-global")
+    @Operation(summary = "Load all indices liste")
     public Object getPaginated()  {
 
         return  this.indicesService.loadIndices();
     }
 
     @PostMapping(value = "/loadMultiple")
+    @Operation(summary = "add multiples indices at once")
     public void loadIndices(@RequestBody IndiceModel[] indices, HttpServletRequest request) {
         log.info("load multiple");
         for(IndiceModel i : indices) {
@@ -54,12 +57,14 @@ public class IndicesController {
 
 
     @GetMapping(value = "/paginate")
+    @Operation(summary = "retieve all liste of indices from db")
     public Page<IndiceModel> getPaginated(@RequestParam int page, @RequestParam int size, HttpServletRequest request)  {
 
         return  this.indicesRepository.findAll(PageRequest.of(page, size));
     }
 
     @GetMapping(value = "/search-indices/{str}")
+    @Operation(summary = "search by charatere")
     public List<IndiceModel> findCode(@PathVariable String str, HttpServletRequest request) {
 
         return this.indicesRepository.findByValueContainingOrLabelContaining(str.toUpperCase());
@@ -71,6 +76,7 @@ public class IndicesController {
     }
 
     @PostMapping(value = "/create")
+    @Operation(summary = "add new indice to db ")
     public IndiceModel addIndices(@RequestBody IndiceModel indice, HttpServletRequest request) {
 
         indice.setLabel(indice.getLabel().toUpperCase());
@@ -83,6 +89,7 @@ public class IndicesController {
     }
 
     @DeleteMapping(value= "/{indice-code}/delete")
+    @Operation(summary = "delete indice from db")
     public Boolean deleteIndice(@PathVariable(value= "indice-code") String code, HttpServletRequest request) {
 
         try {

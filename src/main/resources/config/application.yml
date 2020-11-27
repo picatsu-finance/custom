@@ -9,6 +9,9 @@ api:
 spring:
   application:
     name: Finance-custom
+  output:
+    ansi:
+      enabled: ALWAYS
   data:
     mongodb:
       uri: mongodb+srv://financeclusteradmin:?DB12541@cluster0.z8e18.gcp.mongodb.net/finance_custom?retryWrites=true&w=majority
