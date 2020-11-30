@@ -31,8 +31,8 @@ dependencies {
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.3.4.RELEASE'
 
 	compile group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '2.3.0'
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
 
-	compile group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '11.0.2'
 	//compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.4.RELEASE'
 	//compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.3.4.RELEASE'
 
@@ -43,6 +43,7 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	testCompile group: 'junit', name: 'junit', version: '3.0.6'
 }
 
 test {

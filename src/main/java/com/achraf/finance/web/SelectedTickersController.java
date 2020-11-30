@@ -3,11 +3,13 @@ package com.achraf.finance.web;
 import com.achraf.finance.model.SelectedTickers;
 import com.achraf.finance.repository.SelectedTickersRepository;
 import io.swagger.v3.oas.annotations.Operation;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,19 +47,24 @@ public class SelectedTickersController {
 
     }
 
-    @DeleteMapping(value= "/{userID}/delete")
+    @DeleteMapping(value= "/{userID}")
     @Operation(summary = "delete selected ticker from specific user")
-    public Boolean deleteTicker(@PathVariable(value= "userID") String userID,
+    public ResponseEntity<?> deleteTicker(@PathVariable(value= "userID") String userID,
                                 @RequestBody SelectedTickers ticker,
                                 HttpServletRequest request) {
 
-        try {
 
-            this.selectedTickersRepository.delete(ticker);
-            return true;
-        } catch (Exception e) {
-            return false;
+        long val =  selectedTickersRepository.deleteAllByUserId(userID);
+
+        if ( val == 1) {
+            return new ResponseEntity<>("Deleted successfully ", HttpStatus.OK);
         }
+        if( val == 0 ) {
+            return new ResponseEntity<>("Cannot find User : " + userID, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>("Obscure error ", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
 }

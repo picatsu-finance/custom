@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @RequestMapping(value = "/api/v1/indices")
@@ -35,9 +40,9 @@ public class IndicesController {
     @Autowired
     private IndicesRepository indicesRepository;
 
-    @GetMapping(value = "/get-global")
+    @GetMapping(value = "/global")
     @Operation(summary = "Load all indices liste")
-    public Object getPaginated()  {
+    public Object loadIndices()  {
 
         return  this.indicesService.loadIndices();
     }
@@ -64,15 +69,19 @@ public class IndicesController {
     }
 
     @GetMapping(value = "/search-indices/{str}")
-    @Operation(summary = "search by charatere")
+    @Operation(summary = "search by charater")
     public List<IndiceModel> findCode(@PathVariable String str, HttpServletRequest request) {
 
-        return this.indicesRepository.findByValueContainingOrLabelContaining(str.toUpperCase());
-        /*
-        return Stream.concat(this.indicesRepository.findByValueContainsIgnoreCase(str.toUpperCase()).stream(),
-                this.indicesRepository.findByLabelContainsIgnoreCase(str.toUpperCase()).stream()
-        ).collect(Collectors.toList());*/
+        // return this.indicesRepository.findByValueContainingOrLabelContaining(str.toUpperCase());
 
+        return new ArrayList<>(
+                Stream.of(this.indicesRepository.findByValueContainsIgnoreCase(str.toUpperCase()),
+                        this.indicesRepository.findByLabelContainsIgnoreCase(str.toUpperCase()))
+                        .flatMap(List::stream)
+                        .collect(Collectors.toMap(IndiceModel::getMic,
+                                d -> d,
+                                (IndiceModel x, IndiceModel y) -> x == null ? y : x))
+                        .values());
     }
 
     @PostMapping(value = "/create")
@@ -88,15 +97,22 @@ public class IndicesController {
         return null;
     }
 
-    @DeleteMapping(value= "/{indice-code}/delete")
+    @DeleteMapping(value= "/{indice-code}")
     @Operation(summary = "delete indice from db")
-    public Boolean deleteIndice(@PathVariable(value= "indice-code") String code, HttpServletRequest request) {
+    public ResponseEntity<?> deleteIndice(@PathVariable(value= "indice-code") String code, HttpServletRequest request) {
 
-        try {
-            indicesRepository.deleteById(code);
-            return indicesRepository.existsById(code);
-        } catch (Exception e) {
-            return null;
+
+
+        long val =  indicesRepository.deleteAllByMic(code.toUpperCase());
+
+        if ( val == 1) {
+            return new ResponseEntity<>("Deleted successfully ", HttpStatus.OK);
         }
+        if( val == 0 ) {
+            return new ResponseEntity<>("Cannot find Symbol : " + code, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>("Obscure error ", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 }

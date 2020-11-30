@@ -11,4 +11,5 @@ public interface IndicesRepository extends MongoRepository<IndiceModel, String> 
     List<IndiceModel> findByValueContainingOrLabelContaining(String value);
     List<IndiceModel> findByValueContainsIgnoreCase(String value);
     List<IndiceModel> findByLabelContainsIgnoreCase(String label);
+    long deleteAllByMic(String mic);
  }

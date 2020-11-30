@@ -8,4 +8,5 @@ import java.util.List;
 public interface SelectedTickersRepository extends MongoRepository<SelectedTickers, String> {
 
     List<SelectedTickers> findAllByUserId(String userId);
+    long deleteAllByUserId(String userId);
 }
