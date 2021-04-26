@@ -9,4 +9,4 @@ docker push ezzefiohez/finance-custom
 
 echo " ######## BUILD CUSTOM DONE ######## "
 
-curl  -X POST http://94.239.109.172:9000/api/webhooks/cc022332-53f4-4d66-be95-df17ae514da0
+curl  -X POST http://146.59.195.214:9000/api/webhooks/13cd54cf-cf29-4fe0-b84d-9141ec2643db

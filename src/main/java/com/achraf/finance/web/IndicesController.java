@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,10 +49,10 @@ public class IndicesController {
 
     @PostMapping(value = "/loadMultiple")
     @Operation(summary = "add multiples indices at once")
-    public void loadIndices(@RequestBody IndiceModel[] indices, HttpServletRequest request) {
+    public void loadIndices(@RequestBody IndiceModel[] indices ) {
         log.info("load multiple");
         for(IndiceModel i : indices) {
-            this.addIndices(i, request);
+            this.addIndices(i);
         }
 
     }
@@ -63,14 +63,14 @@ public class IndicesController {
 
     @GetMapping(value = "/paginate")
     @Operation(summary = "retieve all liste of indices from db")
-    public Page<IndiceModel> getPaginated(@RequestParam int page, @RequestParam int size, HttpServletRequest request)  {
+    public Page<IndiceModel> getPaginated(@RequestParam int page, @RequestParam int size )  {
 
         return  this.indicesRepository.findAll(PageRequest.of(page, size));
     }
 
     @GetMapping(value = "/search-indices/{str}")
     @Operation(summary = "search by charater")
-    public List<IndiceModel> findCode(@PathVariable String str, HttpServletRequest request) {
+    public List<IndiceModel> findCode(@PathVariable String str ) {
 
         // return this.indicesRepository.findByValueContainingOrLabelContaining(str.toUpperCase());
 
@@ -86,7 +86,7 @@ public class IndicesController {
 
     @PostMapping(value = "/create")
     @Operation(summary = "add new indice to db ")
-    public IndiceModel addIndices(@RequestBody IndiceModel indice, HttpServletRequest request) {
+    public IndiceModel addIndices(@RequestBody IndiceModel indice ) {
 
         indice.setLabel(indice.getLabel().toUpperCase());
         indice.setMic(indice.getMic().toUpperCase());
@@ -99,7 +99,7 @@ public class IndicesController {
 
     @DeleteMapping(value= "/{indice-code}")
     @Operation(summary = "delete indice from db")
-    public ResponseEntity<?> deleteIndice(@PathVariable(value= "indice-code") String code, HttpServletRequest request) {
+    public ResponseEntity<?> deleteIndice(@PathVariable(value= "indice-code") String code ) {
 
 
 
